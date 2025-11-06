@@ -428,7 +428,7 @@
         <div class="grid md:grid-cols-2 gap-8">
           <!-- Project 1 -->
           <div
-            class="group relative overflow-hidden rounded-2xl  aspect-video bg-zinc-900 scroll-reveal"
+            class="group relative overflow-hidden rounded-2xl aspect-video bg-zinc-900 scroll-reveal"
           >
             <img
               src="image/img4.jpg"
@@ -621,10 +621,12 @@
           ></textarea>
           <button
             type="submit"
+            id="submit-btn"
             class="bg-gradient-to-r from-green-400 to-cyan-400 text-black px-12 py-4 rounded-full font-semibold text-lg hover:shadow-2xl hover:shadow-green-400/50 transition-all"
           >
             Send Message
           </button>
+          <div id="form-status" class="mt-4 text-center text-sm"></div>
         </form>
       </div>
     </section>
@@ -764,6 +766,15 @@
       document.querySelector("form").addEventListener("submit", async (e) => {
         e.preventDefault();
 
+        const submitBtn = document.getElementById("submit-btn");
+        const formStatus = document.getElementById("form-status");
+
+        // Show sending state
+        submitBtn.textContent = "Sending...";
+        submitBtn.disabled = true;
+        formStatus.textContent = "";
+        formStatus.className = "mt-4 text-center text-sm";
+
         const formData = new FormData(e.target);
         const name = formData.get("name");
         const email = formData.get("email");
@@ -783,14 +794,21 @@
           const result = await res.json();
 
           if (result.success) {
-            alert("✅ Message sent successfully!");
+            formStatus.textContent = "✅ Message sent successfully!";
+            formStatus.classList.add("text-green-400");
             e.target.reset();
           } else {
-            alert("❌ Failed to send message. Try again.");
+            formStatus.textContent = "❌ Failed to send message. Try again.";
+            formStatus.classList.add("text-red-400");
           }
         } catch (error) {
           console.error("❌ Error:", error);
-          alert("🚨 Network error. Try again later.");
+          formStatus.textContent = "🚨 Network error. Try again later.";
+          formStatus.classList.add("text-red-400");
+        } finally {
+          // Reset button
+          submitBtn.textContent = "Send Message";
+          submitBtn.disabled = false;
         }
       });
     </script>
