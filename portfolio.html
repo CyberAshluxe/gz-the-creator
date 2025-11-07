@@ -267,7 +267,7 @@
             <video
               id="video1"
               src="video/vid1.mp4"
-              class="w-full h-96 object-cover"
+              class="w-full h-full object-cover"
             ></video>
             <button
               id="playPauseBtn1"
@@ -275,6 +275,26 @@
             >
               <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+            <button
+              id="backwardBtn1"
+              class="absolute bottom-4 left-4 w-12 h-12 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-all"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"
+                />
+              </svg>
+            </button>
+            <button
+              id="forwardBtn1"
+              class="absolute bottom-4 right-4 w-12 h-12 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-all"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"
+                />
               </svg>
             </button>
           </div>
@@ -308,7 +328,7 @@
             <video
               id="video2"
               src="video/vid2.mp4"
-              class="w-full h-96 object-cover"
+              class="w-full h-full object-cover"
             ></video>
             <button
               id="playPauseBtn2"
@@ -316,6 +336,26 @@
             >
               <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
+              </svg>
+            </button>
+            <button
+              id="backwardBtn2"
+              class="absolute bottom-4 left-4 w-12 h-12 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-all"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"
+                />
+              </svg>
+            </button>
+            <button
+              id="forwardBtn2"
+              class="absolute bottom-4 right-4 w-12 h-12 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-all"
+            >
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"
+                />
               </svg>
             </button>
           </div>
@@ -374,11 +414,6 @@
               class="w-full h-80 object-cover"
             />
           </div>
-
-         
-
-          
-          
         </div>
       </div>
     </section>
@@ -518,10 +553,14 @@
         {
           video: document.getElementById("video1"),
           button: document.getElementById("playPauseBtn1"),
+          backwardBtn: document.getElementById("backwardBtn1"),
+          forwardBtn: document.getElementById("forwardBtn1"),
         },
         {
           video: document.getElementById("video2"),
           button: document.getElementById("playPauseBtn2"),
+          backwardBtn: document.getElementById("backwardBtn2"),
+          forwardBtn: document.getElementById("forwardBtn2"),
         },
         {
           video: document.getElementById("video3"),
@@ -533,7 +572,7 @@
         },
       ];
 
-      videos.forEach(({ video, button }) => {
+      videos.forEach(({ video, button, backwardBtn, forwardBtn }) => {
         let autoplayTimeout;
         let isPlaying = false;
 
@@ -572,6 +611,23 @@
           }
           updateButton(button, isPlaying);
         });
+
+        // Backward button functionality
+        if (backwardBtn) {
+          backwardBtn.addEventListener("click", () => {
+            video.currentTime = Math.max(0, video.currentTime - 10);
+          });
+        }
+
+        // Forward button functionality
+        if (forwardBtn) {
+          forwardBtn.addEventListener("click", () => {
+            video.currentTime = Math.min(
+              video.duration,
+              video.currentTime + 10
+            );
+          });
+        }
 
         // Update button icon
         function updateButton(btn, playing) {
